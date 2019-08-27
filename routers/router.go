@@ -9,22 +9,27 @@ package routers
 
 import (
 	"blog/controllers"
-
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/plugins/cors"
 )
 
+
+
+var adminController =  &controllers.AdminController{}
+
+
 func init() {
-	ns := beego.NewNamespace("/v1",
-		beego.NSNamespace("/object",
-			beego.NSInclude(
-				&controllers.ObjectController{},
-			),
-		),
-		beego.NSNamespace("/user",
-			beego.NSInclude(
-				&controllers.UserController{},
-			),
-		),
-	)
+	beego.InsertFilter("*",beego.BeforeRouter,cors.Allow(&cors.Options{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "HEAD"},
+		AllowHeaders:     []string{"Origin", "Authorization", "Access-Control-Allow-Origin", "Content-Type", "access_token"},
+		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin"},
+		AllowCredentials: true,
+	}))
+
+	ns := beego.NewNamespace("/blog")
+	{
+		ns.Post("/login",adminController.Login)
+	}
 	beego.AddNamespace(ns)
 }
