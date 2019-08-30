@@ -15,7 +15,11 @@ import (
 
 
 
-var adminController =  &controllers.AdminController{}
+var(
+	adminController =  &controllers.AdminController{}
+    markdownController = &controllers.MarkDownController{}
+)
+
 
 
 func init() {
@@ -30,6 +34,7 @@ func init() {
 	ns := beego.NewNamespace("/blog")
 	{
 		ns.Post("/login",adminController.Login)
+		ns.Post("/addmarkdown",markdownController.AddMarkDown)
 	}
 	beego.AddNamespace(ns)
 }

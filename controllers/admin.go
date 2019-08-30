@@ -20,10 +20,11 @@ type Admin struct {
 
 
 func (this *AdminController) Login(ctx *context.Context){
+
 	currentUser := Admin{}
 
-	var code int = 200
-	var msg string = "登录成功"
+	code := 200
+	msg := "登录成功"
 
 
 	if err := json.Unmarshal(ctx.Input.RequestBody,&currentUser);err!=nil{
@@ -32,8 +33,6 @@ func (this *AdminController) Login(ctx *context.Context){
 	}
 
 	searchAdmin := models.Admin{Username:currentUser.Username}
-
-	fmt.Println(1111,searchAdmin)
 
 	if err := searchAdmin.GetUserByUsername(); err !=nil{
 		code = 302
@@ -45,12 +44,14 @@ func (this *AdminController) Login(ctx *context.Context){
 		msg = "密码校验失败"
 	}
 
-	code  = 200
-
 	util.OutputRes(ctx,&util.Result{
-		code,
-		currentUser,
-		msg,
+		Code:code,
+		Data: struct {
+			Username  string `json:"username"`
+		}{
+			Username:currentUser.Username,
+		},
+		Msg:msg,
 	})
 }
 

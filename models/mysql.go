@@ -12,7 +12,6 @@ type MysqlDB struct {
 	gorm *gorm.DB
 }
 
-
 type Config struct {
 	User string
 	Password string
@@ -21,16 +20,22 @@ type Config struct {
 
 var mysqlDB *MysqlDB
 
-func InitMysqlDB() error{
+func InitMysqlDB(cfg *Config) error{
 
-	db, err := gorm.Open("mysql", "root:123456@/blog?charset=utf8&parseTime=True&loc=Local")
+	mysqlUrl := `%s:%s@/%s?charset=utf8&parseTime=True&loc=Local`
+	mysqlUrl = fmt.Sprintf(mysqlUrl,cfg.User,cfg.Password,cfg.Dbname)
+
+	db, err := gorm.Open("mysql", mysqlUrl)
 
 	if err !=nil{
-		fmt.Println("-----------------------> open err")
 		return err
 	}
 
 	if db.DB().Ping() != nil{
+		return err
+	}
+
+	if err = initMarkDown(db); err !=nil{
 		return err
 	}
 
@@ -44,7 +49,7 @@ func InitMysqlDB() error{
 	}
 
 	runtime.SetFinalizer(db,func(db *gorm.DB){
-			db.Close()
+		db.Close()
 	})
 
 	return nil
