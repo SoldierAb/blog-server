@@ -49,6 +49,7 @@ func InitMysqlDB(cfg *Config) error{
 	}
 
 	runtime.SetFinalizer(db,func(db *gorm.DB){
+		fmt.Println("---------------db.Close()---------------------------------------")
 		db.Close()
 	})
 

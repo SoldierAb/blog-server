@@ -34,7 +34,16 @@ func init() {
 	ns := beego.NewNamespace("/blog")
 	{
 		ns.Post("/login",adminController.Login)
-		ns.Post("/addmarkdown",markdownController.AddMarkDown)
+
+		markdownNS := beego.NewNamespace("/markdown")
+
+		markdownNS.Filter("before",adminController.Authentication)
+		{
+			markdownNS.Post("/add",markdownController.AddMarkDown)
+		}
+
+		ns.Namespace(markdownNS)
+
 	}
 	beego.AddNamespace(ns)
 }

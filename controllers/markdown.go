@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"blog/define"
 	"blog/models"
 	"blog/util"
 	"fmt"
@@ -38,7 +39,7 @@ func (this *MarkDownController) AddMarkDown(ctx *context.Context) {
 	}
 
 	util.OutputRes(ctx,&util.Result{
-		Code:200,
+		Code:define.CODE_SUCC,
 		Data: &MarkContent{
 			Content:content,
 			CreateTime:createTime,

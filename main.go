@@ -3,6 +3,7 @@ package main
 import (
 	"blog/models"
 	_ "blog/routers"
+	"blog/util"
 	"log"
 
 	"github.com/astaxie/beego"
@@ -15,8 +16,15 @@ func main() {
 		Password:beego.AppConfig.String("password"),
 		Dbname:beego.AppConfig.String("dbname"),
 	})
+
 	if err!=nil{
 		log.Fatal(err)
+	}
+
+	redisErr := util.InitConnectRedis()
+
+	if redisErr!=nil{
+		log.Fatal(redisErr)
 	}
 
 	if beego.BConfig.RunMode == "dev" {
