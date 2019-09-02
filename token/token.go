@@ -27,14 +27,14 @@ func CreateToken(admin *models.Admin) (string,error){
 		return "",err
 	}
 
-	err = util.SetRedisKey("BLOG-TOKEN",tokenStr)
+	err = util.SetRedisKey("BLOG-TOKEN",tokenStr,"EX",3600*24)  //一天有效期
 
 	if err !=nil{
 		log.Fatalf("redis set usertoken err： %v ",err)
 		return "", err
 	}
 
-	userToken,err := util.GetRedisKey("BLOG-TOKEN")
+	userToken,err := util.GetRedisValue("BLOG-TOKEN")
 
 	if  err!=nil{
 		log.Fatalf("get redisKey BLOG-TOKEN ERR: %v  ",err)

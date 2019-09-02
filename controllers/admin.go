@@ -36,8 +36,7 @@ func (this *AdminController) Authentication(ctx *context.Context){
 
 	}
 
-
-	redisToken ,err:= util.GetRedisKey("BLOG-TOKEN")
+	redisToken ,err:= util.GetRedisValue("BLOG-TOKEN")
 
 	if err !=nil{
 		util.OutputRes(ctx,define.Res(define.CODE_OVERTIME))    //没有登录
