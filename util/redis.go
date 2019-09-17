@@ -9,9 +9,7 @@ import (
 	"time"
 )
 
-
 const(
-
 	RedisUrl = "redis://127.0.0.1:6379"
 	RedisPass = "redisgjchen"
 )

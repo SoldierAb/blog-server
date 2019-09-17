@@ -9,6 +9,8 @@ import (
 
 
 func main() {
+
+
 	err:=models.InitMysqlDB(&models.Config{
 		User:beego.AppConfig.String("user"),
 		Password:beego.AppConfig.String("password"),

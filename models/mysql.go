@@ -43,6 +43,10 @@ func InitMysqlDB(cfg *Config) error{
 		return err
 	}
 
+	if err  = initCategories(db);err !=nil{
+		return err
+	}
+
 	mysqlDB = &MysqlDB{
 		gorm:   db,
 		dbName: `blog`,

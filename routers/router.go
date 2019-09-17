@@ -13,13 +13,11 @@ import (
 	"github.com/astaxie/beego/plugins/cors"
 )
 
-
-
 var(
 	adminController =  &controllers.AdminController{}
     markdownController = &controllers.MarkDownController{}
+    categoriesController = &controllers.CategoriesController{}
 )
-
 
 
 func init() {
@@ -34,6 +32,13 @@ func init() {
 	ns := beego.NewNamespace("/blog")
 	{
 		ns.Post("/login",adminController.Login)
+
+		categoryNS := beego.NewNamespace("/categories")
+		{
+			categoryNS.Post("/add",categoriesController.Add)
+		}
+
+		ns.Namespace(categoryNS)
 
 		markdownNS := beego.NewNamespace("/markdown")
 

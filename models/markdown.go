@@ -1,10 +1,13 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 type MarkDown struct {
 	Id 			uint   	`json:"id"  			gorm:"primary_key"`
-	CreateTime 	int64  	`json:"create_time"		form:"create_time"`                   //创建时间
+	CreateTime 	time.Time  	`json:"create_time"		form:"create_time"`                   //创建时间
 	Title 		string  `json:"title"           form:"title"`
 	Content 	string 	`json:"content"         form:"content"`
 }
