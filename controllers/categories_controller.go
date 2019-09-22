@@ -23,7 +23,6 @@ type CategoriesInfo struct {
 func (this CategoriesController) Add(ctx *context.Context){
 	cateInstace := models.Categories{}
 
-
 	if err:= json.Unmarshal(ctx.Input.RequestBody,&cateInstace);err !=nil{
 		this.ServerError(ctx,err)
 		return

@@ -16,7 +16,6 @@ const (
 	TYPE_DIR  //目录
 )
 
-
 const (
 	CODE_SUCC = iota       //成功
 	CODE_FAIL              //失败
@@ -28,9 +27,10 @@ const (
 	CODE_TOKEN_CREATE_ERROR    //TOKEN生成错误
 	CODE_NOT_LOGIN            //未登录
 	CODE_OVERTIME             //过期
-	CODE_SIGN_IN_OTHER_PLACE    //别处登录
+	CODE_SIGN_IN_OTHER_PLACE  //别处登录
 	CODE_ALREADY_EXISTED        //资源已存在
 	CODE_DATABASE_ERROR        //数据库错误
+	CODE_BADREQUEST            //请求参数错误
 )
 
 type BaseRes struct {
@@ -38,7 +38,6 @@ type BaseRes struct {
 	Data interface{} `json:"data"`
 	Msg string `json:"msg"`
 }
-
 
 func Msg(code int) string{
 	MsgMap:=map[int]string{
@@ -55,6 +54,7 @@ func Msg(code int) string{
 		CODE_SIGN_IN_OTHER_PLACE:"用户已在别处登录,请重新登录或者修改密码",
 		CODE_ALREADY_EXISTED:"资源已存在",
 		CODE_DATABASE_ERROR:"数据库错误",
+		CODE_BADREQUEST:"请求参数错误",
 	}
 
 	msg,ok := MsgMap[code]

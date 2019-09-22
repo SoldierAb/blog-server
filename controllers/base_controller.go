@@ -28,3 +28,5 @@ func (this *BaseController) Out(ctx *context.Context,code int,data interface{}){
 		Msg:define.Msg(code),
 	})
 }
+
+
