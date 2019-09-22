@@ -17,6 +17,7 @@ var(
 	adminController =  &controllers.AdminController{}
     markdownController = &controllers.MarkDownController{}
     categoriesController = &controllers.CategoriesController{}
+    nodeController = &controllers.NodeController{}
 )
 
 
@@ -40,6 +41,13 @@ func init() {
 		}
 
 		ns.Namespace(categoryNS)
+
+		nodeNS := beego.NewNamespace("node")
+		{
+			nodeNS.Post("/add",nodeController.Add)
+		}
+
+		ns.Namespace(nodeNS)
 
 		markdownNS := beego.NewNamespace("/markdown")
 

@@ -5,6 +5,7 @@ import (
 	"blog/models"
 	"blog/util"
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"path/filepath"
 	"strconv"
@@ -54,7 +55,8 @@ func (this *NodeController) Add(ctx *context.Context){
 
 	nodeType := define.TYPE_FILE
 
-	fpath:= filepath.Join(strconv.Itoa(int(req.CategoryId)),fmt.Sprintf("%s_%d",req.Name,time.Now().Unix()))
+	ffname := filepath.Join(strconv.Itoa(int(req.CategoryId)),fmt.Sprintf("%s_%d.md",req.Name,time.Now().Unix()))
+	fpath:= filepath.Join(beego.AppConfig.String("nodedir"),ffname)
 
 	if has || len(fileStream) != 0{
 		err = util.SaveFile(ctx,"file",fpath)
