@@ -16,9 +16,10 @@ type CategoriesController struct {
 //文档类别集合
 type CategoriesInfo struct {
 	*models.Categories
-	Dirs models.Nodes
+	Nodes models.Nodes  `json:"nodes"`
 }
 
+//添加分类
 func (this CategoriesController) Add(ctx *context.Context){
 	cateInstace := models.Categories{}
 
@@ -32,8 +33,6 @@ func (this CategoriesController) Add(ctx *context.Context){
 
 	db := models.NewConn()
 
-	fmt.Println("cateInstace: ",cateInstace)
-
 	count,err :=cateInstace.CheckName(db)
 
 	if err!=nil{
@@ -42,7 +41,7 @@ func (this CategoriesController) Add(ctx *context.Context){
 	}
 
 	if count != 0{
-		this.Out(ctx,define.CODE_ALREADY_EXISTED)
+		this.Out(ctx,define.CODE_ALREADY_EXISTED,count)
 		return
 	}
 
@@ -53,7 +52,7 @@ func (this CategoriesController) Add(ctx *context.Context){
 		return
 	}
 
-	this.Out(ctx, define.CODE_SUCC)
+	this.Out(ctx, define.CODE_SUCC,count)
 }
 
 //获取所有类别数据
@@ -66,11 +65,11 @@ func (this CategoriesController) GetAll(ctx *context.Context){
 	list,err:=categoriesInstance.List(conn)
 
 	if err !=nil{
-		this.Out(ctx,define.CODE_SERVER_ERROR)
+		this.ServerError(ctx,err)
 		return
 	}
 
-	allCateforiesNodes := make([]CategoriesInfo,len(list))
+	allCateforiesNodes := make([]CategoriesInfo,0,len(list))
 
 	for _,val := range list{
 		category := CategoriesInfo{
@@ -78,13 +77,15 @@ func (this CategoriesController) GetAll(ctx *context.Context){
 		}
 		node := models.Node{}
 		dirs,err := node.List(conn,category.ID)
+		fmt.Println("dirs ",dirs)
 		if err !=nil{
-			this.Out(ctx,define.CODE_SERVER_ERROR,err)
+			this.ServerError(ctx,err)
 			return
 		}
-		category.Dirs = dirs
+		category.Nodes = dirs
 		allCateforiesNodes = append(allCateforiesNodes,category)
 	}
 
 	this.Out(ctx,define.CODE_SUCC,allCateforiesNodes)
+
 }

@@ -66,14 +66,14 @@ func Msg(code int) string{
 	}
 }
 
-
-func Res(code int,data ...interface{}) *BaseRes{
-	return &BaseRes{
+func Res(code int,data interface{}) BaseRes{
+	return BaseRes{
 		Code:code,
 		Data:data,
 		Msg:Msg(code),
 	}
 }
+
 
 
 

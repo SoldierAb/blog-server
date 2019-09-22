@@ -31,7 +31,8 @@ func (this *AdminController) Authentication(ctx *context.Context){
 
 	if userToken = ctx.Request.Header.Get("token");userToken == ""{
 
-		util.OutputRes(ctx,define.Res(define.CODE_NOT_LOGIN))    //没有登录
+		//util.OutputRes(ctx,define.Res(define.CODE_NOT_LOGIN))    //没有登录
+		this.Out(ctx,define.CODE_NOT_LOGIN,nil)
 		return
 
 	}
@@ -39,14 +40,14 @@ func (this *AdminController) Authentication(ctx *context.Context){
 	redisToken ,err:= util.GetRedisValue("BLOG-TOKEN")
 
 	if err !=nil{
-		util.OutputRes(ctx,define.Res(define.CODE_OVERTIME))    //没有登录
+		this.Out(ctx,define.CODE_OVERTIME,nil)    //没有登录
 		return
 	}
 
 	fmt.Println("redisToken",redisToken,"token",userToken)
 
 	if !strings.EqualFold(userToken,redisToken){
-		util.OutputRes(ctx,define.Res(define.CODE_SIGN_IN_OTHER_PLACE))     //token验证不一致
+		this.Out(ctx,define.CODE_SIGN_IN_OTHER_PLACE,nil)  //token验证不一致
 		return
 	}
 
@@ -75,19 +76,19 @@ func (this *AdminController) Login(ctx *context.Context){
 	searchAdmin := models.Admin{Username:currentUser.Username}
 
 	if err := searchAdmin.GetUserByUsername(); err !=nil{
-		util.OutputRes(ctx,define.Res(define.CODE_USER_NOT_EXISTED))
+		this.Out(ctx,define.CODE_USER_NOT_EXISTED,nil)
 		return
 	}
 
 	if searchAdmin.Password != currentUser.Password{
-		util.OutputRes(ctx,define.Res(define.CODE_PASS_WRONG))
+		this.Out(ctx,define.CODE_PASS_WRONG,nil)
 		return
 	}
 
 	token,err := btoken.CreateToken(&searchAdmin)    //创建token
 
 	if err != nil{
-		util.OutputRes(ctx,define.Res(define.CODE_TOKEN_CREATE_ERROR))
+		this.Out(ctx,define.CODE_TOKEN_CREATE_ERROR,nil)
 		return
 	}
 

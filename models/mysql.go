@@ -35,6 +35,10 @@ func InitMysqlDB(cfg *Config) error{
 		return err
 	}
 
+	if err = initNode(db);err !=nil{
+		return err
+	}
+
 	if err = initMarkDown(db); err !=nil{
 		return err
 	}
@@ -53,7 +57,6 @@ func InitMysqlDB(cfg *Config) error{
 	}
 
 	runtime.SetFinalizer(db,func(db *gorm.DB){
-		fmt.Println("---------------db.Close()---------------------------------------")
 		db.Close()
 	})
 

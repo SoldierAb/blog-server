@@ -36,6 +36,7 @@ func init() {
 		categoryNS := beego.NewNamespace("/categories")
 		{
 			categoryNS.Post("/add",categoriesController.Add)
+			categoryNS.Get("/",categoriesController.GetAll)
 		}
 
 		ns.Namespace(categoryNS)

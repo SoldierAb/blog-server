@@ -8,14 +8,19 @@ import (
 type Nodes []*Node
 
 type Node struct {
-	ID int64 `gorm:"primary_key" json:"id"`
-	ParentID int64 `json:"parent_id"`
-	Type define.NodeType `json:"type"`
-	FilePath string `json:"file_path"`
-	CategoryID int64 `json:"category_id"`
-	Name string `json:"name"`
-	Discription string `json:"discription"`
-	Children Nodes `json:"children"`
+	ID int64 				`gorm:"primary_key" json:"id"`
+	ParentID int64 			`json:"parent_id"`
+	Type define.NodeType 	`json:"type"`
+	FilePath string 		`json:"file_path"`
+	CategoryID int64 		`json:"category_id"`
+	Name string 			`json:"name"`
+	Discription string 		`json:"discription"`
+	Children Nodes 			`json:"children"`
+}
+
+
+func initNode(db *gorm.DB) error{
+	return db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Node{}).Error
 }
 
 func (*Node) TableName() string{
@@ -45,6 +50,8 @@ func (n *Node) List(db *gorm.DB,categoryId int64)(list Nodes,err error){
 
 	if err ==nil{
 		list = list.ToTree()
+	}else{
+		return nil, err
 	}
 
 	return
